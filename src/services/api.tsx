@@ -9,22 +9,25 @@ const formatDate = (date: string): string => {
     return `${year}${month}${day}`;
   };
 
-export const fetchOrgContracts = async (cnpjOrgao: string, dataInicial: string, dataFinal: string, pagina: Number) => {
+export const fetchOrgContracts = async (cnpjOrgao: string | null, dataInicial: string, dataFinal: string) => {
 
 const dataInicialFormatada = formatDate(dataInicial)
 const dataFinalFormatada = formatDate(dataFinal)
 
+    // ! CRIA O OBJETO PARAMS E REMOVE O cnpjOrgao se ele for null ou vazio para não dar erro na requisão da API
+    const params: any = {
+        dataInicial: dataInicialFormatada,
+        dataFinal: dataFinalFormatada,
+        pagina: 1, //* API Só retorna valores se o valor da pagina for 1.
+        tamanhoPagina: 10
+    };
+
+    if(cnpjOrgao) {
+        params.cnpjOrgao = cnpjOrgao;
+    }
 
     try{
-        const response = await api.get('/contratos', {
-            params: {
-            cnpjOrgao,
-            dataInicial: dataInicialFormatada,
-            dataFinal: dataFinalFormatada,
-            pagina
-            },
-
-    });
+        const response = await api.get('/contratos', { params });
     return response.data;
     } catch(error) {
         console.error('Erro ao buscar contratos:', error);

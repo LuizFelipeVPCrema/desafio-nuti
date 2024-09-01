@@ -1,3 +1,8 @@
+export interface OrgaoEntidadeType {
+    cnpj: string,
+    razaoSocial: string
+}
+
 export interface ContractType {
     numeroControlePNCP: string;
     dataVigenciaInicio: string;
@@ -5,4 +10,5 @@ export interface ContractType {
     nomeRazaoSocialFornecedor: string;
     objetoContrato: string;
     valorInicial: number;
+    orgaoEntidade: OrgaoEntidadeType;
 }
